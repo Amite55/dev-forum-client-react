@@ -2,13 +2,16 @@ import React from 'react';
 import img from '../../assets/login/login.jpg';
 import logo from '../../assets/logo.png'
 import { FaGithub } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import toast from 'react-hot-toast';
 import useAuth from '../../customsHooks/useAuth';
 
 const Login = () => {
-    const {singInUser, signInWithGoogle, signInWithGithub} = useAuth();
+    const navigate = useNavigate();
+    const location = useLocation();
+    const from = location?.state || '/';
+    const {singInUser, signInWithGoogle, signInWithGithub, setLoading, loading} = useAuth();
 
 
        // ========= sing in user ===========
@@ -20,21 +23,27 @@ const Login = () => {
         try{
           await singInUser(email, password)
           toast.success('Your login success')
+          navigate(form)
         }catch(err){
           console.log(err);
           toast.error('Sing in not success')
+          setLoading(false)
         }
       }
 
     //   google login ========
     const handleGoogle = async () => {
+        setLoading(true)
        await signInWithGoogle()
        toast.success('Login success')
+       navigate(from)
     }
     // github login =======
     const handleGithub = async () => {
+        setLoading(true)
         await signInWithGithub();
         toast.success('Login success')
+        navigate(from)
     }
 
     return (
@@ -62,7 +71,7 @@ const Login = () => {
                             Welcome back!
                         </p>
                         {/* =========== google login ================= */}
-                        <div onClick={handleGoogle} className='flex cursor-pointer items-center justify-center mt-4 text-gray-600 transition-colors duration-300 transform border rounded-lg   hover:bg-gray-50 '>
+                        <button disabled={loading} onClick={handleGoogle} className='flex disabled:cursor-not-allowed cursor-pointer items-center justify-center mt-4 text-gray-600 transition-colors duration-300 transform border rounded-lg   hover:bg-gray-50 w-full'>
                             <div className='px-4 py-2'>
                                 <svg className='w-6 h-6' viewBox='0 0 40 40'>
                                     <path
@@ -87,9 +96,9 @@ const Login = () => {
                             <span className='w-5/6 px-4 py-3 font-bold text-center'>
                                 Sign in with Google
                             </span>
-                        </div>
+                        </button>
                         {/* =========== github login ================= */}
-                        <div onClick={handleGithub} className='flex cursor-pointer items-center justify-center mt-4 text-gray-600 transition-colors duration-300 transform border rounded-lg   hover:bg-gray-50 '>
+                        <button disabled={loading} onClick={handleGithub} className='flex disabled:cursor-not-allowed cursor-pointer items-center justify-center mt-4 text-gray-600 transition-colors duration-300 transform border rounded-lg  hover:bg-gray-50 w-full'>
                             <div className='px-4 py-2'>
                                 <FaGithub />
                             </div>
@@ -97,7 +106,7 @@ const Login = () => {
                             <span className='w-5/6 px-4 py-3 font-bold text-center'>
                                 Sign in with Github
                             </span>
-                        </div>
+                        </button>
 
 
 
@@ -146,7 +155,7 @@ const Login = () => {
                                 />
                             </div>
                             <div className='mt-6'>
-                                <input type="submit" className='w-full px-6 py-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-gray-800 rounded-lg hover:bg-gray-700 focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-50' value="Sign In" />
+                                <input type="submit" className='w-full px-6 py-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-gray-800 rounded-lg hover:bg-gray-700 focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-50' value={loading ? "..." : "Sign In"} />
                             </div>
                         </form>
 

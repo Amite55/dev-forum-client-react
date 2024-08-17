@@ -59,12 +59,15 @@ const Navbar = () => {
                 <div className="navbar-end">
                     {
                         user ?
-                            <div className="dropdown dropdown-end">
+                            <>
+                                <p className='font-bold mr-3'>{user?.displayName}</p>
+
+                                <div className="dropdown dropdown-end">
                                 <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
                                     <div className="w-10 rounded-full">
                                         <img
                                             alt="Tailwind CSS Navbar component"
-                                            src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+                                            src={user?.photoURL} />
                                     </div>
                                 </div>
                                 <ul
@@ -74,6 +77,7 @@ const Navbar = () => {
                                     <li onClick={handleLogOut}><Link>Logout</Link></li>
                                 </ul>
                             </div>
+                            </>
                         :
                          <li className='btn btn-ghost btn-sm'> <Link to='/login'>Join Us</Link></li>
                     }

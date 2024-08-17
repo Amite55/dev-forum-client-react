@@ -1,23 +1,25 @@
-import React, { useEffect, useState } from 'react';
 import AllPostedData from './AllPostedData';
+import { useQuery } from '@tanstack/react-query';
+import LoadingSpinner from '../../component/LoadnigSpiner';
+import useAxiosCommon from '../../customsHooks/useAxiosCommon';
 
 const PostedData = () => {
-    const [data, setData] = useState();
+    const axiosCommon = useAxiosCommon();
 
-    useEffect( () => {
-        const fetchData = async () => {
-            const response = await fetch("../../../public/fake.json")
-            const data = await response.json()
-            setData(data)
+    const {data: postedData=[], isLoading} = useQuery({
+        queryKey: ['postedData'],
+        queryFn: async () => {
+            const {data} = await axiosCommon.get('/postedData');
+            return data;
         }
-        fetchData()
-    },[])
-    console.log(data);
+    })
+    console.log(postedData);
+    if(isLoading) return <LoadingSpinner/>
 
     return (
         <div className=''>
             {
-                data?.map(allPost => <AllPostedData key={allPost.id} allPost={allPost}/>)
+                postedData?.map(allPost => <AllPostedData key={allPost.id} allPost={allPost}/>)
             }
         </div>
     );
