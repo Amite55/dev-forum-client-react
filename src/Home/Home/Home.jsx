@@ -1,13 +1,13 @@
 import React from 'react';
 import Banner from '../Banner/Banner';
-import TagList from '../TagList/TagList';
 import PostedData from '../PostedData/PostedData';
+import Tags from '../TagList/Tags';
 
 const Home = () => {
     return (
         <div>
           <Banner/>
-          <TagList/>
+          <Tags/>
           {/* annoucement */}
           <PostedData/>
         </div>

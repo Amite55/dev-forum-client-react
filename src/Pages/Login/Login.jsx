@@ -12,7 +12,7 @@ const Login = () => {
     const location = useLocation();
     const from = location?.state || '/';
     const {singInUser, signInWithGoogle, signInWithGithub, setLoading, loading} = useAuth();
-
+    console.log(from);
 
        // ========= sing in user ===========
        const handleSubmit = async (e) => {
@@ -23,7 +23,7 @@ const Login = () => {
         try{
           await singInUser(email, password)
           toast.success('Your login success')
-          navigate(form)
+          navigate(from)
         }catch(err){
           console.log(err);
           toast.error('Sing in not success')

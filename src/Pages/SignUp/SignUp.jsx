@@ -1,6 +1,6 @@
 import React from 'react';
 import { FaGithub } from 'react-icons/fa';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import logo from '../../assets/logo.png'
 import img from '../../assets/register/register.jpg'
 import { useForm } from 'react-hook-form';
@@ -12,7 +12,9 @@ import axios from 'axios';
 const SignUp = () => {
   const { createUser, signInWithGoogle, signInWithGithub, updateUserProfile, loading, setLoading } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const { register, handleSubmit, formState: { errors } } = useForm();
+  const from = location?.state || '/';
 
   const onSubmit = async data => {
     // console.log(data)
@@ -32,7 +34,7 @@ const SignUp = () => {
       // name and image upload ------------
       await updateUserProfile(name, data.data.display_url);
       toast.success('SignUp success')
-      navigate('/');
+      navigate(from);
     }catch(error){
       console.log(error);
       toast.error('Please try again')
@@ -45,14 +47,14 @@ const SignUp = () => {
     setLoading(true)
     await signInWithGoogle()
     toast.success('Google Login success')
-    navigate('/')
+    navigate(from)
   }
   // github login =======
   const handleGithub = async () => {
     setLoading(true)
     await signInWithGithub();
     toast.success('Github Login success')
-    navigate('/')
+    navigate(from)
   }
 
   return (

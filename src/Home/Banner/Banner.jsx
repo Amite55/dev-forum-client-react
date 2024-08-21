@@ -10,7 +10,7 @@ const Banner = () => {
         <div className="hero-overlay bg-opacity-70"></div>
         <div className="hero-content text-neutral-content text-center">
           <div className="max-w-md">
-            <input type="text" name="" className='w-96 rounded-md' id="" />
+            <input type="text" name="" className='w-4/6 md:w-96 rounded-md' id="" />
           </div>
         </div>
       </div>
