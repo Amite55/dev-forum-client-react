@@ -5,10 +5,12 @@ import { Helmet } from 'react-helmet-async';
 import useAxiosSecure from '../../../customsHooks/useAxiosSecure';
 import { useMutation } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 
 const AddPost = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure()
+  const navigate = useNavigate();
 //  tags data ======
   const options = [
     { value: 'Mern', label: 'Mern' },
@@ -25,7 +27,7 @@ const AddPost = () => {
     { value: 'Tools', label: 'Tools' },
   ];
 
-  const {mutateAsync} = useMutation({
+  const {mutateAsync, reset} = useMutation({
     mutationFn: async (addPost) => {
       const {data} = await axiosSecure.post('/post', addPost);
       return data;
@@ -52,6 +54,8 @@ const AddPost = () => {
       console.table(addPost);
       await mutateAsync(addPost)
       toast.success('Added Your post.')
+      reset()
+      navigate('/dashboard/my-post')
     } catch (error) {
       console.log(error);
       toast.error('Something is wrong.')
