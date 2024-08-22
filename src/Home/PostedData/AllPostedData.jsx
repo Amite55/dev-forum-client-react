@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 const AllPostedData = ({ allPost }) => {
-    const { author, authorImage, title, description, tags, postTime, commentsCount, upVote, downVote, sharePost } = allPost;
+    const { author, authorImage, title, description, tags, postTime} = allPost;
     return (
         <div className="max-w-2xl mx-auto my-10 px-8 py-4 bg-white rounded-lg shadow-md dark:bg-gray-800">
             <Link to={`/post/${allPost?._id}`}>
@@ -33,10 +33,10 @@ const AllPostedData = ({ allPost }) => {
                         <p className='text-white hover:bg-slate-600 rounded-full md:px-2 py-1' title='Share'><FaShare size='15' /></p>
                     </div> */}
                     <div className='flex  gap-2 md:gap-2'>
-                        <small className='text-white '>UpVote:{upVote}</small>
-                        <small className='text-white'>DownVote:{downVote}</small>
-                        <small className='text-white'>Comment:{commentsCount}</small>
-                        <small className='text-white'>Share:{sharePost}</small>
+                        <small className='text-white '>UpVote:{allPost?.upVote}</small>
+                        <small className='text-white'>DownVote:{allPost?.downVote}</small>
+                        <small className='text-white'>Comment:{allPost?.commentsCount}</small>
+                        <small className='text-white'>Share:{allPost?.sharePost}</small>
                     </div>
                 </div>
             </Link>
