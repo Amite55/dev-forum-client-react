@@ -6,7 +6,6 @@ const TagBox = ({ label, icon: Icon }) => {
   const navigate = useNavigate();
 
   const tags = params.get('tags');
-  console.log(tags === label)
 
   const handleSubmit = () => {
     let currentQuery = {tags: label};

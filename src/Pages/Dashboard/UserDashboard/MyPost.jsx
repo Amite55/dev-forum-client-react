@@ -1,10 +1,11 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import useAxiosSecure from '../../../customsHooks/useAxiosSecure';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import useAuth from '../../../customsHooks/useAuth';
 import LoadingSpinner from '../../../component/LoadnigSpiner';
 import MyPostedTableRow from './MyPostedTableRow';
+import toast from 'react-hot-toast';
 
 const MyPost = () => {
     const {user} = useAuth()
@@ -17,7 +18,31 @@ const MyPost = () => {
             return data;
         }
     })
-    console.log(myPost);
+
+    // Deleted post ========
+    const {mutateAsync} = useMutation({
+      mutationFn: async (id) => {
+        const {data} = await axiosSecure.delete(`/post/${id}`);
+        return data;
+      },
+      onSuccess: () => {
+        toast.success('Your post deleted')
+        refetch()
+      }
+    })
+
+
+    // Delete post ======
+    const handleDelete = async (e) => {
+      console.log(e);
+      try{
+        await mutateAsync(e)
+      } catch(error) {
+        console.log(error);
+        toast.error('Please try again')
+      }
+    }
+
     if(isLoading) return <LoadingSpinner/>
 
     return (
@@ -69,7 +94,12 @@ const MyPost = () => {
 
                     {/* Room row data */}
                     {
-                        myPost.map(post => <MyPostedTableRow key={post._id} post={post} refetch={refetch} />)
+                        myPost.map(post => 
+                        <MyPostedTableRow 
+                        key={post._id} 
+                        post={post}  
+                        handleDelete={handleDelete}
+                        />)
                     }
 
                     </tbody>

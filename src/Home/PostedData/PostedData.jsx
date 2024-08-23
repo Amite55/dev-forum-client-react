@@ -8,7 +8,6 @@ const PostedData = () => {
     const [params, setParams] = useSearchParams();
     const axiosCommon = useAxiosCommon();
     const tags = params.get('tags');
-    console.log(tags);
 
     const { data: postedData = [], isLoading } = useQuery({
         queryKey: ['postedData', tags],
@@ -17,7 +16,6 @@ const PostedData = () => {
             return data;
         }
     });
-    console.log(postedData);
     if (isLoading) return <LoadingSpinner />
 
     return (

@@ -7,6 +7,7 @@ import LoadingSpinner from '../../component/LoadnigSpiner';
 import { FaRegComment } from 'react-icons/fa';
 import { FaShare } from 'react-icons/fa6';
 import { FacebookIcon, FacebookShareButton, FacebookShareCount, LinkedinIcon, LinkedinShareButton } from 'react-share';
+import { Helmet } from 'react-helmet-async';
 
 const PostDetails = () => {
     const { id } = useParams();
@@ -21,16 +22,22 @@ const PostDetails = () => {
             return data;
         }
     })
-    console.log(postedData);
 
-    const { author, authorImage, title, description, tags, postTime, commentsCount, upVote, downVote, sharePost } = postedData;
+    const { author, authorImage, title, description, tags, commentsCount, upVote, downVote, sharePost } = postedData;
+
+    const date = new Date(postedData?.postTime).toLocaleString();
     if (isLoading) return <LoadingSpinner />
 
     return (
-        <div>
+       <>
+       <Helmet>
+            <title>Post Details || DevForum</title>
+       </Helmet>
+       
+       <div>
             <div className="max-w-2xl mx-auto mt-24 px-8 py-4 bg-white rounded-lg shadow-md dark:bg-gray-800">
                 <div className="flex items-center justify-between">
-                    <span className="text-sm font-light text-gray-600 dark:text-gray-400">{postTime}</span>
+                    <span className="text-sm font-light text-gray-600 dark:text-gray-400">{date}</span>
 
                     <div className="flex items-center">
                         <img className="hidden object-cover w-10 h-10 mx-4 rounded-full sm:block" src={authorImage} alt="avatar" />
@@ -83,6 +90,7 @@ const PostDetails = () => {
             {/* social link  */}
             
         </div>
+       </>
 
     );
 };

@@ -3,12 +3,13 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 const AllPostedData = ({ allPost }) => {
-    const { author, authorImage, title, description, tags, postTime} = allPost;
+    const { author, authorImage, title, description, tags} = allPost;
+    const date = new Date(allPost?.postTime).toLocaleString();
     return (
         <div className="max-w-2xl mx-auto my-10 px-8 py-4 bg-white rounded-lg shadow-md dark:bg-gray-800">
             <Link to={`/post/${allPost?._id}`}>
                 <div className="flex items-center justify-between">
-                    <span className="text-sm font-light text-gray-600 dark:text-gray-400">{postTime}</span>
+                    <span className="text-sm font-light text-gray-600 dark:text-gray-400">{date}</span>
 
                     <div className="flex items-center">
                         <img className="hidden object-cover w-10 h-10 mx-4 rounded-full sm:block" src={authorImage} alt="avatar" />
