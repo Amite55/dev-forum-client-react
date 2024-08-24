@@ -1,17 +1,19 @@
 import { useState } from 'react'
 import { GrLogout } from 'react-icons/gr'
-import { BsFillHouseAddFill } from 'react-icons/bs'
 import { AiOutlineBars } from 'react-icons/ai'
-import { NavLink } from 'react-router-dom'
 import { Link } from 'react-router-dom'
 import useAuth from '../customsHooks/useAuth'
-import { MdHomeWork, MdPostAdd } from 'react-icons/md'
-import { CgProfile } from "react-icons/cg";
-import {  } from "react-icons/md";
+import { } from "react-icons/md";
+import useRole from '../customsHooks/useRole'
+import AdminMenu from './Menu/AdminMenu'
+import UserMenu from './Menu/UserMenu'
 
 const Sidebar = () => {
-  const { logOut } = useAuth()
+  const { logOut } = useAuth();
+  const [role, isLoading] = useRole();
   const [isActive, setActive] = useState(false)
+
+  console.log(role, isLoading);
 
   // Sidebar Responsive Handler
   const handleToggle = () => {
@@ -24,7 +26,7 @@ const Sidebar = () => {
         <div>
           <div className='block cursor-pointer p-4 font-bold'>
             <Link to='/' className='font-bold'>
-              DevForum 
+              DevForum
             </Link>
           </div>
         </div>
@@ -39,15 +41,14 @@ const Sidebar = () => {
 
       {/* Sidebar */}
       <div
-        className={`z-10 md:fixed flex flex-col justify-between overflow-x-hidden bg-gray-100 w-64 space-y-6 px-2 py-4 absolute inset-y-0 left-0 transform ${
-          isActive && '-translate-x-full'
-        }  md:translate-x-0  transition duration-200 ease-in-out`}
+        className={`z-10 md:fixed flex flex-col justify-between overflow-x-hidden bg-gray-100 w-64 space-y-6 px-2 py-4 absolute inset-y-0 left-0 transform ${isActive && '-translate-x-full'
+          }  md:translate-x-0  transition duration-200 ease-in-out`}
       >
         <div>
           <div>
             <div className='w-full hidden md:flex px-4 py-2 shadow-lg rounded-lg justify-center items-center bg-cyan-200 mx-auto'>
               <Link to='/' className='font-bold'>
-              DevForum
+                DevForum
               </Link>
             </div>
           </div>
@@ -58,55 +59,14 @@ const Sidebar = () => {
 
             {/*  Menu Items */}
             <nav>
-          {/* Profile Menu */}
-          <NavLink
-            to='/dashboard'
-            end
-            className={({ isActive }) =>
-              `flex items-center px-4 py-2 my-5  transition-colors duration-300 transform  hover:bg-gray-300   hover:text-gray-700 ${
-                isActive ? 'bg-gray-300  text-gray-700' : 'text-gray-600'
-              }`
-            }
-          >
-            <CgProfile className='w-5 h-5' />
-
-            <span className='mx-4 font-medium'>My Profile</span>
-          </NavLink>
-
-              {/* Add post */}
-              <NavLink
-                to='add-post'
-                className={({ isActive }) =>
-                  `flex items-center px-4 py-2 my-5  transition-colors duration-300 transform  hover:bg-gray-300   hover:text-gray-700 ${
-                    isActive ? 'bg-gray-300  text-gray-700' : 'text-gray-600'
-                  }`
-                }
-              >
-                <MdPostAdd className='w-5 h-5' />
-
-                <span className='mx-4 font-medium'>Add Post</span>
-              </NavLink>
-              {/* My post */}
-              <NavLink
-                to='my-post'
-                className={({ isActive }) =>
-                  `flex items-center px-4 py-2 my-5  transition-colors duration-300 transform  hover:bg-gray-300   hover:text-gray-700 ${
-                    isActive ? 'bg-gray-300  text-gray-700' : 'text-gray-600'
-                  }`
-                }
-              >
-                <MdHomeWork className='w-5 h-5' />
-
-                <span className='mx-4 font-medium'>My Post</span>
-              </NavLink>
+              {role === 'admin' && <AdminMenu />}
+              {role === 'user' && <UserMenu />}
             </nav>
           </div>
         </div>
 
         <div>
           <hr />
-
-
           <button
             onClick={logOut}
             className='flex w-full items-center px-4 py-2 mt-5 text-gray-600 hover:bg-gray-300   hover:text-gray-700 transition-colors duration-300 transform'

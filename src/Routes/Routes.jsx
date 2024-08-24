@@ -13,6 +13,9 @@ import AddPost from "../Pages/Dashboard/UserDashboard/AddPost";
 import MyPost from "../Pages/Dashboard/UserDashboard/MyPost";
 import PostDetails from "../Pages/PostDetails/PostDetails";
 import PrivateRoute from "./PrivateRoute";
+import ManageUser from "../Pages/Dashboard/AdminDashboard/ManageUser/ManageUser";
+import Announcement from "../Home/Announcement/Announcement";
+import Activities from "../Pages/Dashboard/AdminDashboard/Activities/Activities";
 
 
 
@@ -58,6 +61,19 @@ import PrivateRoute from "./PrivateRoute";
           path: 'add-post',
           element: <AddPost/>
         },
+        // admin dashboard =====
+        {
+          path: 'manage-users',
+          element: <ManageUser/>
+        },
+        {
+          path: 'announcement',
+          element: <Announcement/>
+        },
+        {
+          path: 'activities',
+          element: <Activities/>
+        }
       ],
     }
   ]);

@@ -1,11 +1,17 @@
 
 import { Helmet } from 'react-helmet-async'
 import useAuth from '../../../customsHooks/useAuth'
+import useRole from '../../../customsHooks/useRole'
+import useBadge from '../../../customsHooks/useBadge';
+import LoadingSpinner from '../../../component/LoadnigSpiner';
 
 const Profile = () => {
-  const { user } = useAuth()
+  const { user, loading } = useAuth() || {};
+  const [role, isLoading] = useRole();
+  const [badge] = useBadge()
 
-  console.log(user)
+  if(loading || isLoading) return <LoadingSpinner/>
+
   return (
     <div className='flex justify-center items-center '>
       <Helmet>
@@ -27,8 +33,8 @@ const Profile = () => {
             />
           </a>
 
-          <p className='p-2 px-4 text-xs text-white bg-pink-500 rounded-full'>
-            Admin
+          <p className='uppercase p-2 px-4 text-xs text-white bg-cyan-500 rounded-full'>
+            {role}
           </p>
           <p className='mt-2 text-xl font-medium text-gray-800 '>
             User Id: {user?.uid}
@@ -46,6 +52,12 @@ const Profile = () => {
                 <span className='font-bold text-black '>
                     {user?.email}
                     </span>
+              </p>
+              <p className='flex flex-col'>
+                Badge
+                <span className=' uppercase font-bold text-black '>
+                    {badge}
+                </span>
               </p>
 
               <div>
