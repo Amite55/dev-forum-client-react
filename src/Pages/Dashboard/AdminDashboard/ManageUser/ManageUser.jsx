@@ -1,7 +1,22 @@
+import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
+import useAxiosSecure from '../../../../customsHooks/useAxiosSecure';
+import LoadingSpinner from '../../../../component/LoadnigSpiner';
+import UserDataRow from './UserDataRow';
 
 const ManageUser = () => {
+    const axiosSecure = useAxiosSecure();
+
+    const {data: users, isLoading, refetch} = useQuery({
+        queryKey: ['users'], 
+        queryFn: async () => {
+            const {data} = await axiosSecure.get('/users');
+            return data;
+        }
+    })
+    if(isLoading) return <LoadingSpinner/>
+
     return (
         <>
             <div className='container mx-auto px-4 sm:px-8'>
@@ -18,6 +33,12 @@ const ManageUser = () => {
                                             scope='col'
                                             className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
                                         >
+                                            Name
+                                        </th>
+                                        <th
+                                            scope='col'
+                                            className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
+                                        >
                                             Email
                                         </th>
                                         <th
@@ -30,7 +51,7 @@ const ManageUser = () => {
                                             scope='col'
                                             className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
                                         >
-                                            Badge
+                                            Subscription Status
                                         </th>
 
                                         <th
@@ -41,7 +62,17 @@ const ManageUser = () => {
                                         </th>
                                     </tr>
                                 </thead>
-                                <tbody>{/* User data table row */}</tbody>
+                                <tbody>
+                                    {/* User data table row */}
+                                    {
+                                        users?.map(user => 
+                                        <UserDataRow 
+                                        key={user?._id} 
+                                        user={user} 
+                                        refetch={refetch}
+                                        />)
+                                    }
+                                    </tbody>
                             </table>
                         </div>
                     </div>
