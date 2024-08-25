@@ -29,7 +29,7 @@ const AdminMenu = () => {
             <MenuItem
                 icon={FaCannabis}
                 label='Announcement'
-                address='announcement'
+                address='add-announcement'
             />
 
 

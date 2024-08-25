@@ -14,8 +14,8 @@ import MyPost from "../Pages/Dashboard/UserDashboard/MyPost";
 import PostDetails from "../Pages/PostDetails/PostDetails";
 import PrivateRoute from "./PrivateRoute";
 import ManageUser from "../Pages/Dashboard/AdminDashboard/ManageUser/ManageUser";
-import Announcement from "../Home/Announcement/Announcement";
 import Activities from "../Pages/Dashboard/AdminDashboard/Activities/Activities";
+import AddAnnouncement from "../Pages/Dashboard/AdminDashboard/AddAnnouncement/AddAnnouncement";
 
 
 
@@ -67,8 +67,8 @@ import Activities from "../Pages/Dashboard/AdminDashboard/Activities/Activities"
           element: <ManageUser/>
         },
         {
-          path: 'announcement',
-          element: <Announcement/>
+          path: 'add-announcement',
+          element: <AddAnnouncement/>
         },
         {
           path: 'activities',
