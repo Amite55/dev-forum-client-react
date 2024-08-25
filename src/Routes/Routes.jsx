@@ -1,6 +1,6 @@
 import {
-    createBrowserRouter,
-  } from "react-router-dom";
+  createBrowserRouter,
+} from "react-router-dom";
 import Main from "../MainLayout/Main";
 import Home from "../Home/Home/Home";
 import Login from "../Pages/Login/Login";
@@ -16,64 +16,85 @@ import PrivateRoute from "./PrivateRoute";
 import ManageUser from "../Pages/Dashboard/AdminDashboard/ManageUser/ManageUser";
 import Activities from "../Pages/Dashboard/AdminDashboard/Activities/Activities";
 import AddAnnouncement from "../Pages/Dashboard/AdminDashboard/AddAnnouncement/AddAnnouncement";
+import AdminRoute from "./AdminRoute";
 
 
 
- export const router = createBrowserRouter([
-    {
-      path: "/",
-      element: <Main/>,
-      errorElement: <ErrorPage/>,
-      children: [
-        {
-            path: '/',
-            element: <Home/>
-        },
-        {
-          path: '/login',
-          element: <Login/>
-        },
-        {
-          path: '/signUp',
-          element: <SignUp/>
-        },
-        {
-          path: '/post/:id',
-          element: <PrivateRoute><PostDetails/></PrivateRoute>
-        }
-      ]
-    },
+export const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Main />,
+    errorElement: <ErrorPage />,
+    children: [
+      {
+        path: '/',
+        element: <Home />
+      },
+      {
+        path: '/login',
+        element: <Login />
+      },
+      {
+        path: '/signUp',
+        element: <SignUp />
+      },
+      {
+        path: '/post/:id',
+        element: <PrivateRoute><PostDetails /></PrivateRoute>
+      }
+    ]
+  },
 
-    // ============ Dashboard route ================
-    {
-      path: '/dashboard', 
-      element: <DashboardLayout/>,
-      children: [
-        {
-          index: true,
-          element: <MyProfile/>
-        },
-        {
-          path: 'my-post',
-          element: <MyPost/>
-        },
-        {
-          path: 'add-post',
-          element: <AddPost/>
-        },
-        // admin dashboard =====
-        {
-          path: 'manage-users',
-          element: <ManageUser/>
-        },
-        {
-          path: 'add-announcement',
-          element: <AddAnnouncement/>
-        },
-        {
-          path: 'activities',
-          element: <Activities/>
-        }
-      ],
-    }
-  ]);
+  // ============ Dashboard route ================
+  {
+    path: '/dashboard',
+    element: <PrivateRoute>
+      <DashboardLayout />
+    </PrivateRoute>,
+    children: [
+      {
+        index: true,
+        element: <PrivateRoute>
+          <MyProfile />
+        </PrivateRoute>
+      },
+      {
+        path: 'my-post',
+        element: <PrivateRoute>
+          <MyPost />
+        </PrivateRoute>
+      },
+      {
+        path: 'add-post',
+        element: <PrivateRoute>
+          <AddPost />
+        </PrivateRoute>
+      },
+      // admin dashboard =====
+      {
+        path: 'manage-users',
+        element: <PrivateRoute>
+          <AdminRoute>
+            <ManageUser />
+          </AdminRoute>
+        </PrivateRoute>
+      },
+      {
+        path: 'add-announcement',
+        element: <PrivateRoute>
+          <AdminRoute>
+            <AddAnnouncement />
+          </AdminRoute>
+        </PrivateRoute>
+      },
+      {
+        path: 'activities',
+        element: <PrivateRoute>
+          <AdminRoute>
+            <Activities />
+          </AdminRoute>
+        </PrivateRoute>
+      }
+    ],
+  }
+]);

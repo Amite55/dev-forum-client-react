@@ -46,7 +46,7 @@ const PostDetails = () => {
                 </div>
 
                 <div className="mt-2">
-                    <a href="#" className="text-xl font-bold text-gray-700 dark:text-white hover:text-gray-600 dark:hover:text-gray-200 hover:underline" tabindex="0" role="link" >{title}</a>
+                    <a href="" className="text-xl font-bold text-gray-700 dark:text-black" tabindex="0" role="link" >{title}</a>
                     <p className="mt-2 text-gray-800 dark:text-gray-900">{description}</p>
                 </div>
 

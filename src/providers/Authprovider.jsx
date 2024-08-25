@@ -3,12 +3,12 @@ import { app } from '../firebase/firebase.config';
 import { createUserWithEmailAndPassword, getAuth, GithubAuthProvider, GoogleAuthProvider, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile } from "firebase/auth"
 import axios from 'axios';
 
-export const AuthContext  = createContext(null);
+export const AuthContext = createContext(null);
 const auth = getAuth(app);
 const googleProvider = new GoogleAuthProvider();
 const githubProvider = new GithubAuthProvider();
 
-const Authprovider = ({children}) => {
+const Authprovider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
 
@@ -21,21 +21,24 @@ const Authprovider = ({children}) => {
         setLoading(true)
         return signInWithEmailAndPassword(auth, email, password)
     }
-    const logOut = () => {
+    const logOut = async () => {
         setLoading(true)
+        await axios.get(`${import.meta.env.VITE_API_URL}/logout`, {
+            withCredentials: true,
+        })
         return signOut(auth)
     }
     const signInWithGoogle = () => {
         setLoading(true)
         return signInWithPopup(auth, googleProvider)
-      }
+    }
     const signInWithGithub = () => {
         setLoading(true);
         return signInWithPopup(auth, githubProvider)
     }
     const updateUserProfile = (name, image) => {
         return updateProfile(auth.currentUser, {
-            displayName: name, 
+            displayName: name,
             photoURL: image
         })
     }
@@ -48,15 +51,26 @@ const Authprovider = ({children}) => {
             role: "user",
             badge: "Bronze"
         }
-        const {data} = await axios.put(`${import.meta.env.VITE_API_URL}/user`, currentUser)
+        const { data } = await axios.put(`${import.meta.env.VITE_API_URL}/user`, currentUser)
         return data;
     }
 
+    // Get token from server
+    const getToken = async email => {
+        const { data } = await axios.post(
+            `${import.meta.env.VITE_API_URL}/jwt`,
+            { email },
+            { withCredentials: true }
+        )
+        return data
+    }
+
     // observer ==========
-    useEffect(()=> {
+    useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, currentUser => {
             setUser(currentUser);
-            if(currentUser){
+            if (currentUser) {
+                getToken(currentUser.email);
                 saveUser(currentUser)
             }
             setLoading(false);
@@ -65,7 +79,7 @@ const Authprovider = ({children}) => {
             return unsubscribe();
         }
     }, [])
-       
+
     const authInfo = {
         user,
         loading,
