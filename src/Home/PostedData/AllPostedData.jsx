@@ -23,7 +23,7 @@ const AllPostedData = ({ allPost }) => {
                 </div>
 
                 <div className='mt-4 flex justify-end mr-5 mb-2'>
-                    <p className='text-black'>Tags: <span className='text-cyan-300 bg-cyan-500 px-2 w-auto rounded-md'>{tags}</span></p>
+                    <p className='text-black'>Tags: <span className='text-cyan-400 bg-cyan-100 px-2 w-auto rounded-full'>{tags}</span></p>
                 </div>
                 <hr className='mt-1 px-7' />
                 <div className="flex mt-1">
