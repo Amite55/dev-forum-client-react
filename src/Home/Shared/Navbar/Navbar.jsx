@@ -3,9 +3,15 @@ import useAuth from '../../../customsHooks/useAuth';
 import toast from 'react-hot-toast';
 import JoinMembershipBtn from '../../../Pages/MemberShip/JoinMembershipBtn';
 import { IoNotificationsSharp } from 'react-icons/io5';
+import { useQuery } from '@tanstack/react-query';
+import useAxiosCommon from '../../../customsHooks/useAxiosCommon';
+import useBadge from '../../../customsHooks/useBadge';
 
 const Navbar = () => {
     const { user, logOut } = useAuth()
+    const axiosCommon = useAxiosCommon();
+    const [badge] = useBadge();
+    console.log(badge);
 
     const handleLogOut = () => {
         logOut()
@@ -16,7 +22,16 @@ const Navbar = () => {
                 console.log(error);
                 toast.error('Please try again')
             })
-    }
+    };
+
+    const { data: announcementData = [] } = useQuery({
+        queryKey: ['announcementData'],
+        queryFn: async () => {
+            const { data } = await axiosCommon.get('/announcementData');
+            console.log(data);
+            return data;
+        }
+    })
 
     const navItem = <>
         <li><NavLink to='/'>Home</NavLink></li>
@@ -45,8 +60,16 @@ const Navbar = () => {
                             tabIndex={0}
                             className="menu menu-sm dropdown-content space-y-1 bg-dark-100 rounded-box z-[100] mt-3 w-52 p-2 shadow">
                             {navItem}
+                            {/* ============ join membership and gold badge ============= */}
+                            <button disabled={badge === 'Gold'} className='disabled:cursor-not-allowed '>
+                                {
+                                    user && <JoinMembershipBtn />
+                                }
+                            </button>
                         </ul>
                     </div>
+
+
                     <Link to='/' className="btn btn-ghost text-xl font-mono">DevForum</Link>
                 </div>
                 <div className="navbar-center hidden lg:flex">
@@ -54,16 +77,20 @@ const Navbar = () => {
                     <ul className="menu menu-horizontal px-2 gap-2">
                         {navItem}
 
-        {/* ============ join membership and gold badge ============= */}
-                        {
-                          user && <JoinMembershipBtn/>
-                        }
+                        {/* ============ join membership and gold badge ============= */}
+                        <button disabled={badge === 'Gold'} className='disabled:cursor-not-allowed '>
+                            {
+                                user && <JoinMembershipBtn />
+                            }
+                        </button>
 
                     </ul>
+                    
                 </div>
                 <div className="navbar-end">
-                  <button className='mr-4'> 
-                    <IoNotificationsSharp className='text-cyan-600 hover:text-cyan-700'  size={28} /> 
+                    <button className='mr-4 relative'>
+                        <IoNotificationsSharp className=' text-cyan-600 hover:text-cyan-700' size={28} />
+                        <span className='absolute bottom-2 right-0 text-red-500 font-semibold'>{announcementData?.length}</span>
                     </button>
                     {
                         user ?
@@ -71,23 +98,23 @@ const Navbar = () => {
                                 <p className='font-bold mr-3 hidden md:block'>{user?.displayName}</p>
 
                                 <div className="dropdown dropdown-end">
-                                <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
-                                    <div className="w-10 rounded-full">
-                                        <img
-                                            alt="Tailwind CSS Navbar component"
-                                            src={user?.photoURL} />
+                                    <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
+                                        <div className="w-10 rounded-full">
+                                            <img
+                                                alt="Tailwind CSS Navbar component"
+                                                src={user?.photoURL} />
+                                        </div>
                                     </div>
-                                </div>
-                                <ul
-                                    tabIndex={0}
-                                    className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
-                                    <li> <Link to='/dashboard'>Dashboard</Link> </li>
-                                    <li onClick={handleLogOut}><Link>Logout</Link></li>
-                                </ul>
+                                    <ul
+                                        tabIndex={0}
+                                        className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
+                                        <li> <Link to='/dashboard'>Dashboard</Link> </li>
+                                        <li onClick={handleLogOut}><Link>Logout</Link></li>
+                                    </ul>
                                 </div>
                             </>
-                        :
-                         <li className='btn btn-ghost btn-sm'> <Link to='/login'>Join Us</Link></li>
+                            :
+                            <li className='btn btn-ghost btn-sm'> <Link to='/login'>Join Us</Link></li>
                     }
                 </div>
             </div>

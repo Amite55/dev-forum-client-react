@@ -1,10 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import useAxiosCommon from '../../customsHooks/useAxiosCommon';
+import { useQuery } from '@tanstack/react-query';
 
 const AllPostedData = ({ allPost }) => {
+    const axiosCommon = useAxiosCommon();
     const { author, authorImage, title, description, tags} = allPost;
     const date = new Date(allPost?.postTime).toLocaleString();
+
+       // comment get ==========
+       const {data: comment = [] } = useQuery({
+        queryKey: ['comment', allPost?._id],
+        queryFn: async () => {
+            const {data: postComment} = await axiosCommon.get(`/comment/${allPost?._id}`);
+            return postComment
+        }
+    })
+    console.log(comment);
+
     return (
         <div className="max-w-2xl mx-auto my-10 px-8 py-4 rounded-lg shadow-md dark:bg-white">
             <Link to={`/post/${allPost?._id}`}>
@@ -36,7 +50,7 @@ const AllPostedData = ({ allPost }) => {
                     <div className='flex  gap-2 md:gap-2'>
                         <small className='text-gray-900 '>UpVote:{allPost?.upVote}</small>
                         <small className='text-gray-900'>DownVote:{allPost?.downVote}</small>
-                        <small className='text-gray-900'>Comment:{allPost?.commentsCount}</small>
+                        <small className='text-gray-900'>Comment:{comment?.length}</small>
                         <small className='text-gray-900'>Share:{allPost?.sharePost}</small>
                     </div>
                 </div>

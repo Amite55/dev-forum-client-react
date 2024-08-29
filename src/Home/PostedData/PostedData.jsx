@@ -24,7 +24,6 @@ const PostedData = () => {
             return data;
         },
     });
-    console.log(count);
 
     // get all post data count =====
     useEffect(()=> {
@@ -36,6 +35,9 @@ const PostedData = () => {
     },[])
     const numberOfPage = Math.ceil(count / itemPerPage);
     const pages = [...Array(numberOfPage).keys()].map(e => e +1);
+
+
+     
 
 
 

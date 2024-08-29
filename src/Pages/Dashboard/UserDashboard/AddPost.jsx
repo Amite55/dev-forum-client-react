@@ -51,7 +51,6 @@ const AddPost = () => {
     // ada data
     try {
       const addPost = { tags, title, description, email, authorImage, author, postTime, commentsCount, upVote, downVote, sharePost };
-      console.table(addPost);
       await mutateAsync(addPost)
       toast.success('Added Your post.')
       reset()

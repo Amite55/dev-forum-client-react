@@ -2,7 +2,7 @@ import React from 'react';
 
 const AllAnnouncement = ({announcement}) => {
     return (
-        <div className="mx-auto w-full max-w-lg px-8 py-4 mt-16 border border-red-500 rounded-lg shadow-lg mb-8">
+        <div className="mx-auto w-full max-w-lg px-8 py-4 mt-8 border border-red-500 rounded-lg shadow-lg mb-8">
                     <div className="flex justify-center -mt-16 md:justify-end">
                         <img className="object-cover w-16 h-16 border-2 border-blue-500 rounded-full dark:border-cyan-500" alt="Testimonial avatar" src={announcement?.authorImage} />
                     </div>

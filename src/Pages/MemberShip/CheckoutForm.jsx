@@ -105,6 +105,7 @@ const CheckoutForm = ({closeModal}) => {
           await mutateAsync(badgeUpdate)
           toast.success('Welcome Our membership User!')
           navigate('/');
+          closeModal()
         } catch(error){
           console.log(error);
         }

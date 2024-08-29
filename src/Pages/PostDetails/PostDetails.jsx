@@ -1,33 +1,82 @@
 import React from 'react';
 import { BiDownvote, BiUpvote } from "react-icons/bi";
 import useAxiosCommon from '../../customsHooks/useAxiosCommon';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 import LoadingSpinner from '../../component/LoadnigSpiner';
 import { FaRegComment } from 'react-icons/fa';
 import { FaShare } from 'react-icons/fa6';
 import { FacebookIcon, FacebookShareButton, FacebookShareCount, LinkedinIcon, LinkedinShareButton, TwitterIcon, TwitterShareButton, WhatsappIcon, WhatsappShareButton } from 'react-share';
 import { Helmet } from 'react-helmet-async';
+import useAxiosSecure from '../../customsHooks/useAxiosSecure';
+import useAuth from '../../customsHooks/useAuth';
+import toast from 'react-hot-toast';
+import ShowComments from './ShowComments';
 
 const PostDetails = () => {
+    const {user} = useAuth();
     const { id } = useParams();
-    console.log(id);
     const axiosCommon = useAxiosCommon();
+    const axiosSecure = useAxiosSecure();
 
     const { data: postedData = {}, isLoading } = useQuery({
         queryKey: ['post', id],
         queryFn: async () => {
             const { data } = await axiosCommon.get(`/post/${id}`);
-            console.log(data);
             return data;
         }
     })
 
-    const { author, authorImage, title, description, tags, commentsCount, upVote, downVote, sharePost } = postedData;
-
+    const { author, authorImage, title, description, tags, commentsCount, upVote, downVote, sharePost, _id } = postedData ;
     const date = new Date(postedData?.postTime).toLocaleString();
-    if (isLoading) return <LoadingSpinner />
 
+    // comment get ==========
+    const {data: comment = [] } = useQuery({
+        queryKey: ['comment', _id],
+        queryFn: async () => {
+            const {data: postComment} = await axiosSecure.get(`/comment/${_id}`);
+            return postComment
+        }
+    })
+
+    // comment post =========
+    const {mutateAsync, reset} = useMutation({
+        mutationFn: async (commentDetails) => {
+            const {data: newComment} = await axiosSecure.post('/comments', commentDetails);
+            return newComment;
+        },
+        onSuccess: () => {
+            toast.success('Send Your Comment!')
+            reset();
+        }
+    })
+
+    // handle comment =====
+    const handleComment = async (e) => {
+        e.preventDefault();
+        const comment = e.target.comment.value;
+        const time = new Date();
+        const commentDetails = {
+            email: user?.email,
+            name: user?.displayName,
+            postedId: postedData?._id,
+            image: user?.photoURL,
+            time,
+            comment,
+        }
+        try{
+            await mutateAsync(commentDetails);
+        } catch(error) {
+            console.log(error);
+            toast.error('Your comment nor found');
+        }
+    }
+
+    console.log(2 > 0 ? 'ami' : 'tmi');
+    // console.log(2 < 0);
+
+    
+    if (isLoading) return <LoadingSpinner />
     return (
        <>
        <Helmet>
@@ -66,7 +115,7 @@ const PostDetails = () => {
                     <div className='flex gap-1 md:gap-2'>
                         <small className='text-black '>UpVote:{upVote}</small>
                         <small className='text-black'>DownVote:{downVote}</small>
-                        <small className='text-black'>Comment:{commentsCount}</small>
+                        <small className='text-black'>Comment:{comment?.length}</small>
                         <small className='text-black'>Share:{sharePost}</small>
                     </div>
                 </div>
@@ -88,12 +137,27 @@ const PostDetails = () => {
             </div>
 
             <div className='max-w-2xl mx-auto '>
-                <from>
+                <form onSubmit={handleComment} >
                     <label>Write a comment.....</label>
-                    <textarea className='w-full border border-cyan-400 px-2 focus:bg-cyan-50 rounded-lg' defaultValue='Start Your comment....' name="comment" id=""></textarea>
-                </from>
+                    <textarea type='text' required className='w-full border border-cyan-400 px-2 focus:bg-cyan-50 rounded-lg focus:placeholder-transparent' placeholder='Start Your comment....' name="comment" id=""></textarea>
+
+                    <button type='submit' className='w-full px-6 py-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-gray-800 rounded-lg hover:bg-gray-700 focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-50 mt-2'>
+                        Comment
+                    </button>
+                </form>
             </div>
-            {/* social link  */}
+            
+            {/* show comments details */}
+
+            {
+               comment?.length > 0 ? comment?.map(cmt => <ShowComments key={cmt?._id} cmt={cmt}/>)
+                : 
+               <>
+                    <div className='text-center my-5'>
+                        <h2 className='font-bold mx-auto text-lg'>No comment Post!</h2>
+                    </div>
+               </> 
+            }
             
         </div>
        </>

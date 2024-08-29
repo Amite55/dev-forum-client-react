@@ -1,16 +1,16 @@
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import LoadingSpinner from '../../component/LoadnigSpiner';
-import useAxiosSecure from '../../customsHooks/useAxiosSecure';
 import AllAnnouncement from './AllAnnouncement';
+import useAxiosCommon from '../../customsHooks/useAxiosCommon';
 
 const Announcement = () => {
-    const axiosSecure = useAxiosSecure();
+    const axiosCommon = useAxiosCommon();
 
     const { data: announcementData = [], isLoading } = useQuery({
         queryKey: ['announcementData'],
         queryFn: async () => {
-            const { data } = await axiosSecure.get('/announcementData');
+            const { data } = await axiosCommon.get('/announcementData');
             console.log(data);
             return data;
         }
