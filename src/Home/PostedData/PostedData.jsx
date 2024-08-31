@@ -67,11 +67,11 @@ const PostedData = () => {
                     <div className='font-light text-neutral-500 mt-2'>
                     Please Select Other Tags Categories.
                     </div>
-                  </div>
+                    </div>
             }
 
 
-<div className='flex justify-center my-10 pb-10'>
+      <div className='flex justify-center my-10 pb-10'>
         <button 
         disabled={currentPage === 1}
         onClick={() => handlePaginationButton(currentPage - 1)}

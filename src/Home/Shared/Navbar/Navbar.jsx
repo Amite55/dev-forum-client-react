@@ -80,7 +80,7 @@ const Navbar = () => {
                         {/* ============ join membership and gold badge ============= */}
                         <button disabled={badge === 'Gold'} className='disabled:cursor-not-allowed '>
                             {
-                                user && <JoinMembershipBtn />
+                                user &&  <JoinMembershipBtn />
                             }
                         </button>
 

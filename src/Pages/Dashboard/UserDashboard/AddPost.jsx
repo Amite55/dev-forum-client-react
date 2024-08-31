@@ -3,15 +3,18 @@ import Select from 'react-select'
 import useAuth from '../../../customsHooks/useAuth';
 import { Helmet } from 'react-helmet-async';
 import useAxiosSecure from '../../../customsHooks/useAxiosSecure';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import useBadge from '../../../customsHooks/useBadge';
+import JoinMembershipBtn from '../../MemberShip/JoinMembershipBtn';
 
 const AddPost = () => {
   const { user } = useAuth();
+  const [badge] = useBadge();
   const axiosSecure = useAxiosSecure()
   const navigate = useNavigate();
-//  tags data ======
+  //  tags data ======
   const options = [
     { value: 'Mern', label: 'Mern' },
     { value: 'React', label: 'React' },
@@ -27,9 +30,19 @@ const AddPost = () => {
     { value: 'Tools', label: 'Tools' },
   ];
 
-  const {mutateAsync, reset} = useMutation({
+
+  const { data: myPost = [] } = useQuery({
+    queryKey: ['my-post', user?.email],
+    queryFn: async () => {
+      const { data } = await axiosSecure.get(`/my-post/${user?.email}`);
+      return data;
+    }
+  })
+
+  // this post will be add to database==============
+  const { mutateAsync, reset } = useMutation({
     mutationFn: async (addPost) => {
-      const {data} = await axiosSecure.post('/post', addPost);
+      const { data } = await axiosSecure.post('/post', addPost);
       return data;
     }
   })
@@ -59,9 +72,9 @@ const AddPost = () => {
       console.log(error);
       toast.error('Something is wrong.')
     }
-
-
   }
+
+
 
   return (
     <>
@@ -124,7 +137,21 @@ const AddPost = () => {
           </div>
 
 
-          <input className='w-full px-6 py-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-gray-800 rounded-lg hover:bg-gray-700 focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-50 mt-5' value="Post" type="submit" />
+          {
+            badge !== 'Gold' && myPost?.length > 4 ? <div> 
+              <div className='divider'>
+              <h1 className='font-bold text-lg mx-auto mt-2 text-red-600'>Your Limit Over</h1>
+              </div>
+              <p className='bg-slate-700 hover:bg-slate-600 text-white py-2 rounded-lg text-center'> Join Our Package<JoinMembershipBtn/></p>
+              
+            </div>
+              :
+              <button
+                className=' w-full px-6 py-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-gray-800 rounded-lg hover:bg-gray-700 focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-50 mt-5' type="submit" >
+                Post
+              </button>
+          }
+
         </form>
 
       </div>

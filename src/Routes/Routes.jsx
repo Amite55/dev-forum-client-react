@@ -7,7 +7,6 @@ import Login from "../Pages/Login/Login";
 import SignUp from "../Pages/SignUp/SignUp";
 import ErrorPage from "../Pages/ErrorPage/ErrorPage";
 import DashboardLayout from "../MainLayout/DashboardLayout";
-import { element } from "prop-types";
 import MyProfile from "../Pages/Dashboard/UserDashboard/MyProfile";
 import AddPost from "../Pages/Dashboard/UserDashboard/AddPost";
 import MyPost from "../Pages/Dashboard/UserDashboard/MyPost";
@@ -17,6 +16,9 @@ import ManageUser from "../Pages/Dashboard/AdminDashboard/ManageUser/ManageUser"
 import Activities from "../Pages/Dashboard/AdminDashboard/Activities/Activities";
 import AddAnnouncement from "../Pages/Dashboard/AdminDashboard/AddAnnouncement/AddAnnouncement";
 import AdminRoute from "./AdminRoute";
+import BookingModal from "../Pages/MemberShip/BookingModal";
+import JoinMembershipBtn from "../Pages/MemberShip/JoinMembershipBtn";
+import MyPostComment from "../Pages/Dashboard/UserDashboard/MyPostComment.jsx/MyPostComment";
 
 
 
@@ -41,6 +43,12 @@ export const router = createBrowserRouter([
       {
         path: '/post/:id',
         element: <PrivateRoute><PostDetails /></PrivateRoute>
+      },
+      {
+        path: '/comment/postId/:id',
+        element: <PrivateRoute>
+          <MyPostComment/>
+        </PrivateRoute>
       }
     ]
   },

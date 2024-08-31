@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BiDownvote, BiUpvote } from "react-icons/bi";
 import useAxiosCommon from '../../customsHooks/useAxiosCommon';
 import { useMutation, useQuery } from '@tanstack/react-query';
@@ -6,7 +6,7 @@ import { useParams } from 'react-router-dom';
 import LoadingSpinner from '../../component/LoadnigSpiner';
 import { FaRegComment } from 'react-icons/fa';
 import { FaShare } from 'react-icons/fa6';
-import { FacebookIcon, FacebookShareButton, FacebookShareCount, LinkedinIcon, LinkedinShareButton, TwitterIcon, TwitterShareButton, WhatsappIcon, WhatsappShareButton } from 'react-share';
+import { FacebookIcon, FacebookShareButton,  LinkedinIcon, LinkedinShareButton, TwitterIcon, TwitterShareButton, WhatsappIcon, WhatsappShareButton } from 'react-share';
 import { Helmet } from 'react-helmet-async';
 import useAxiosSecure from '../../customsHooks/useAxiosSecure';
 import useAuth from '../../customsHooks/useAuth';
@@ -18,8 +18,9 @@ const PostDetails = () => {
     const { id } = useParams();
     const axiosCommon = useAxiosCommon();
     const axiosSecure = useAxiosSecure();
+    const [loading, setLoading] = useState(false);
 
-    const { data: postedData = {}, isLoading } = useQuery({
+    const { data: postedData = {}, isLoading, refetch } = useQuery({
         queryKey: ['post', id],
         queryFn: async () => {
             const { data } = await axiosCommon.get(`/post/${id}`);
@@ -27,7 +28,7 @@ const PostDetails = () => {
         }
     })
 
-    const { author, authorImage, title, description, tags, commentsCount, upVote, downVote, sharePost, _id } = postedData ;
+    const { author, authorImage, title, description, tags, upVote, downVote, sharePost, _id } = postedData ;
     const date = new Date(postedData?.postTime).toLocaleString();
 
     // comment get ==========
@@ -54,6 +55,7 @@ const PostDetails = () => {
     // handle comment =====
     const handleComment = async (e) => {
         e.preventDefault();
+        setLoading(true)
         const comment = e.target.comment.value;
         const time = new Date();
         const commentDetails = {
@@ -70,10 +72,51 @@ const PostDetails = () => {
             console.log(error);
             toast.error('Your comment nor found');
         }
+        setLoading(false)
     }
 
-    console.log(2 > 0 ? 'ami' : 'tmi');
-    // console.log(2 < 0);
+    // update upVote count UpVote ==============
+    const {mutateAsync: VoteUpdate}  = useMutation({
+        mutationFn: async (newVote) => {
+            const {data} = await axiosSecure.patch(`/posted/upVote/${postedData?._id}`, newVote)
+            return data;
+        },
+        onSuccess: (success) => {
+            if(success.modifiedCount > 0){
+                toast.success('Up vote success')
+            }
+            console.log(success);
+            refetch()
+        }
+    })
+
+    // update count downVote/upVote ===========
+    const handleVote = async (type) => {
+        // up vote functionality ============
+        if(type === 'upVotes'){
+            const newUPVote = {
+                upVote: upVote + 1
+            }
+            try{
+                await VoteUpdate(newUPVote);
+            } catch(error){
+                console.log(error);
+                toast.error('Action Not Allow!')
+            }
+        }
+        // down vote functionality ===========
+        else if(type === 'downVotes'){
+            const newDownVote = {
+                downVote: downVote + 1,
+            }
+            try{
+                await VoteUpdate(newDownVote);
+            } catch(error){
+                console.log(error);
+                toast.error('Action Not Allow!')
+            }
+        }
+    }
 
     
     if (isLoading) return <LoadingSpinner />
@@ -106,32 +149,43 @@ const PostDetails = () => {
                 <div className="flex items-center justify-between mt-1">
 
                     <div className='flex gap-1'>
-                        <p className='text-black hover:bg-gray-300 rounded-full md:px-2 py-1' title='UpVote:'><BiUpvote size='15' /></p>
-                        <p className='text-black hover:bg-gray-300 rounded-full md:px-2 py-1' title='DownVote:'><BiDownvote size='15' /></p>
-                        <p className='text-black hover:bg-gray-300 rounded-full md:px-2 py-1' title='Comment'><FaRegComment size='15' /></p>
-                        <p className='text-black hover:bg-gray-300 rounded-full md:px-2 py-1' title='Share'><FaShare size='15' /></p>
+                        <button  
+                        onClick={() => handleVote('upVotes')} 
+                        className='text-black hover:bg-gray-300 rounded-full md:px-2 py-1  active:bg-slate-300' title='UpVote:'>
+                            <BiUpvote size='15' />
+                        </button>
+                        <button 
+                        onClick={() => handleVote('downVotes')} 
+                        className='text-black hover:bg-gray-300 rounded-full md:px-2 py-1' title='DownVote:'>
+                            <BiDownvote size='15' />
+                            </button>
+                        <p className='text-black hover:bg-gray-300 rounded-full md:px-2 py-1' title='Comment'>
+                            <FaRegComment size='15' />
+                            </p>
+                        <p className='text-black hover:bg-gray-300 rounded-full md:px-2 py-1' title='Share'>
+                            <FaShare size='15' />
+                            </p>
                     </div>
 
                     <div className='flex gap-1 md:gap-2'>
                         <small className='text-black '>UpVote:{upVote}</small>
                         <small className='text-black'>DownVote:{downVote}</small>
                         <small className='text-black'>Comment:{comment?.length}</small>
-                        <small className='text-black'>Share:{sharePost}</small>
                     </div>
                 </div>
             </div>
             <div className='max-w-2xl mx-auto my-2'> 
 
-                <FacebookShareButton className='mr-2' url={''} quote={title}>
+                <FacebookShareButton className='mr-2' url={'tutorial.com'} quote={title}>
                     <FacebookIcon size={32} round />
                 </FacebookShareButton>
-                <LinkedinShareButton className='mr-2' url={''}>
+                <LinkedinShareButton className='mr-2' url={'tutorial.com'} >
                     <LinkedinIcon size={32} round/>
                 </LinkedinShareButton>
-                <WhatsappShareButton className='mr-2'>
+                <WhatsappShareButton className='mr-2' url={'tutorial.com'} >
                     <WhatsappIcon size={32} round/>
                 </WhatsappShareButton > 
-                <TwitterShareButton className='mr-2'>
+                <TwitterShareButton className='mr-2' url={'tutorial.com'} >
                     <TwitterIcon size={32} round/>
                 </TwitterShareButton>
             </div>
@@ -142,7 +196,9 @@ const PostDetails = () => {
                     <textarea type='text' required className='w-full border border-cyan-400 px-2 focus:bg-cyan-50 rounded-lg focus:placeholder-transparent' placeholder='Start Your comment....' name="comment" id=""></textarea>
 
                     <button type='submit' className='w-full px-6 py-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-gray-800 rounded-lg hover:bg-gray-700 focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-50 mt-2'>
-                        Comment
+                        {
+                            loading ? '....' : 'Comment'
+                        }
                     </button>
                 </form>
             </div>

@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types'
 import { useState } from 'react';
 import DeleteModal from './DeleteModal';
+import { FaRegComments } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
 const MyPostedTableRow = ({ post,  handleDelete }) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -8,6 +10,8 @@ const MyPostedTableRow = ({ post,  handleDelete }) => {
       setIsOpen(false)
     }
 
+     const totalVote = post?.upVote + post?.downVote;
+     console.log(totalVote);
      const date =new Date(post?.postTime).toDateString();
     return (
         <tr>
@@ -18,10 +22,14 @@ const MyPostedTableRow = ({ post,  handleDelete }) => {
           <p className='text-gray-900 whitespace-no-wrap'>{date}</p>
         </td>
         <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
-          <p className='text-gray-900 whitespace-no-wrap'>3</p>
+          <p className='text-gray-900 whitespace-no-wrap'>{totalVote}</p>
         </td>
         <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
-          <p className='text-gray-900 whitespace-no-wrap'>4</p>
+          <p className='whitespace-no-wrap'>
+            <Link to={`/comment/postId/${post?._id}`}>
+            <FaRegComments size={24} className='hover:text-cyan-500 font-bold'  />
+            </Link>
+            </p>
         </td>
         <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
           <button 

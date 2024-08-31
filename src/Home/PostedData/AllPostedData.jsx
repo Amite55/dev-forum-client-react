@@ -51,7 +51,6 @@ const AllPostedData = ({ allPost }) => {
                         <small className='text-gray-900 '>UpVote:{allPost?.upVote}</small>
                         <small className='text-gray-900'>DownVote:{allPost?.downVote}</small>
                         <small className='text-gray-900'>Comment:{comment?.length}</small>
-                        <small className='text-gray-900'>Share:{allPost?.sharePost}</small>
                     </div>
                 </div>
             </Link>

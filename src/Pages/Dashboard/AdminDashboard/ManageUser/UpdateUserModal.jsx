@@ -2,7 +2,6 @@ import PropTypes from 'prop-types'
 import { Fragment, useState } from 'react'
 import {
     Dialog,
-    Listbox,
     Transition,
     TransitionChild,
     DialogTitle,
@@ -11,7 +10,7 @@ import {
 const roles = [ 'user', 'admin']
 
 const UpdateUserModal = ({ setIsOpen, isOpen, modalHandler, user }) => {
-    const [selected, setSelected] = useState(user.role)
+    const [selected, setSelected] = useState(user?.role)
 
     
     return (

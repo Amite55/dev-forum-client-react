@@ -1,4 +1,3 @@
-import React from 'react';
 import img from '../../assets/login/login.jpg';
 import logo from '../../assets/logo.png'
 import { FaGithub } from 'react-icons/fa';
@@ -6,6 +5,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import toast from 'react-hot-toast';
 import useAuth from '../../customsHooks/useAuth';
+import { CgSpinnerTwoAlt } from 'react-icons/cg';
 
 const Login = () => {
     const navigate = useNavigate();
@@ -155,7 +155,9 @@ const Login = () => {
                                 />
                             </div>
                             <div className='mt-6'>
-                                <input type="submit" className='w-full px-6 py-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-gray-800 rounded-lg hover:bg-gray-700 focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-50' value={loading ? "..." : "Sign In"} />
+                                <button 
+                                disabled={loading}
+                                type="submit" className='disabled:cursor-not-allowed w-full px-6 py-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-gray-800 rounded-lg hover:bg-gray-700 focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-50'>{loading ? <CgSpinnerTwoAlt className='m-auto animate-spin' size={20} /> : 'Sign Up'}</button>
                             </div>
                         </form>
 

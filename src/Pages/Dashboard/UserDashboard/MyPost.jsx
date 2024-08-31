@@ -97,7 +97,7 @@ const MyPost = () => {
                         myPost.map(post => 
                         <MyPostedTableRow 
                         key={post._id} 
-                        post={post}  
+                        post={post}
                         handleDelete={handleDelete}
                         />)
                     }
