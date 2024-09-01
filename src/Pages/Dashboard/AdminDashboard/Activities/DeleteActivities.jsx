@@ -6,10 +6,9 @@ import {
     DialogTitle,
   } from '@headlessui/react'
   import { Fragment } from 'react'
-  import PropTypes from 'prop-types'
-  const DeleteModal = ({ closeModal, isOpen, handleDelete, id }) => {
+const DeleteActivities = ({isOpen, closeModal, handleDelete}) => {
     return (
-      <Transition appear show={isOpen} as={Fragment}>
+        <Transition appear show={isOpen} as={Fragment}>
         <Dialog as='div' className='relative z-10' onClose={closeModal}>
           <TransitionChild
             as={Fragment}
@@ -39,7 +38,7 @@ import {
                     as='h3'
                     className='text-lg font-medium leading-6 text-gray-900'
                   >
-                    Are you sure?
+                    Are you sure this Report is delete?
                   </DialogTitle>
                   <div className='mt-2'>
                     <p className='text-sm text-gray-500'>
@@ -50,7 +49,7 @@ import {
                   <div className='flex mt-2 justify-around'>
                     <button
                       onClick={() => {
-                        handleDelete(id)
+                        handleDelete()
                         closeModal()
                       }}
                       type='button'
@@ -72,12 +71,7 @@ import {
           </div>
         </Dialog>
       </Transition>
-    )
-  }
-  
-  DeleteModal.propTypes = {
-    closeModal: PropTypes.func,
-    isOpen: PropTypes.bool,
-  }
-  
-  export default DeleteModal
+    );
+};
+
+export default DeleteActivities;

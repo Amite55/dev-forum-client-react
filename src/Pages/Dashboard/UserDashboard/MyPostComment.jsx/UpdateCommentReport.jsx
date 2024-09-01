@@ -10,6 +10,7 @@ import {
 import { useMutation } from '@tanstack/react-query'
 import toast from 'react-hot-toast';
 import useAxiosSecure from '../../../../customsHooks/useAxiosSecure';
+import useAuth from '../../../../customsHooks/useAuth';
 // all reports ===========
 const reports = [
     { value: 'This comment is spam.', label: 'This comment is spam.' },
@@ -19,6 +20,7 @@ const reports = [
 
 const UpdateCommentReport = ({ setIsOpenReport, isOpenReport, cmt }) => {
     const axiosSecure = useAxiosSecure();
+    const {user} = useAuth()
 
     const {mutateAsync} = useMutation({
         mutationFn: async (report) => {
@@ -26,7 +28,8 @@ const UpdateCommentReport = ({ setIsOpenReport, isOpenReport, cmt }) => {
             return data;
         },
         onSuccess: () => {
-            toast.success('Send your Report!')
+            toast.success('Send your Report!');
+            setIsOpenReport(false)
         }
     })
     const handleReport = async (e) => {
@@ -35,6 +38,7 @@ const UpdateCommentReport = ({ setIsOpenReport, isOpenReport, cmt }) => {
         const reports = {
             commentId: cmt?._id,
             comment: cmt?.comment,
+            commentEmail: cmt?.email,
             postedId: cmt?.postedId,
             name: user?.displayName,
             email: user?.email,
@@ -102,7 +106,6 @@ const UpdateCommentReport = ({ setIsOpenReport, isOpenReport, cmt }) => {
                                         
                                         type='submit'
                                         className='disabled:cursor-not-allowed inline-flex justify-center rounded-md border border-transparent bg-cyan-100 px-4 py-2 text-sm font-medium text-cyan-900 hover:bg-cyan-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 focus-visible:ring-offset-2'
-                                        onClick={() => setIsOpenReport(false)}
                                     >
                                         Send Report
                                     </button>

@@ -1,4 +1,5 @@
 import { Fragment } from 'react'
+import Select from 'react-select'
 import {
     Dialog,
     Transition,
@@ -10,6 +11,12 @@ import useAuth from '../../../../customsHooks/useAuth';
 import useAxiosSecure from '../../../../customsHooks/useAxiosSecure';
 import { useMutation } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
+// all feedbackSelect ===========
+const feedbackSelect = [
+    { value: 'Misleading Information', label: 'Misleading Information' },
+    { value: 'Offensive Language', label: 'Offensive Language' },
+    { value: 'Harassment/Bullying', label: 'Harassment/Bullying' },
+  ];
 
 const UpdateCommentFeedback = ({setIsOpenFeedback, isOpenFeedback, cmt}) => {
     const {user} = useAuth();
@@ -22,20 +29,24 @@ const UpdateCommentFeedback = ({setIsOpenFeedback, isOpenFeedback, cmt}) => {
         },
         onSuccess: () => {
             toast.success('Send your Report!')
+            setIsOpenFeedback(false)
         }
     })
 
     const handleFeedback = async (e) => {
         e.preventDefault();
         const feedback = e.target.feedback.value;
+        const feedbackOptions = e.target.feedbackSelect.value;
         const feedbacks = {
             commentId: cmt?._id,
             comment: cmt?.comment,
             postedId: cmt?.postedId,
+            commentEmail: cmt?.email,
             feedbackTime: new Date(),
             name: user?.displayName,
             email: user?.email,
             feedback,
+            feedbackOptions
         }
         await mutateAsync(feedbacks)
     }
@@ -70,7 +81,7 @@ const UpdateCommentFeedback = ({setIsOpenFeedback, isOpenFeedback, cmt}) => {
                         leaveFrom='opacity-100 scale-100'
                         leaveTo='opacity-0 scale-95'
                     >
-                        <DialogPanel className='w-full h-56 max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all'>
+                        <DialogPanel className='w-full h-72 max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all'>
                             <DialogTitle
                                 as='h3'
                                 className='text-lg font-medium text-center leading-6 text-gray-900'
@@ -81,7 +92,15 @@ const UpdateCommentFeedback = ({setIsOpenFeedback, isOpenFeedback, cmt}) => {
                             <div className='mt-4 w-full'>
 
                                 {/* =========== comment report set select ========== */}
-                                <input className='w-full border rounded-lg h-12 px-2' type="text" name="feedback" placeholder='Feedback' id="" />
+                                <Select
+                                        name="feedbackSelect"
+                                        required
+                                        options={feedbackSelect}
+                                        className="  rounded-lg w-full my-4 focus:bg-cyan-400"
+                                        classNamePrefix="select"
+                                    />
+
+                                <input className='w-full border rounded-lg h-12 px-2' type="text" name="feedback" required placeholder='Feedback' id="" />
 
                             </div>
                             <hr className='mt-16 ' />
@@ -90,7 +109,6 @@ const UpdateCommentFeedback = ({setIsOpenFeedback, isOpenFeedback, cmt}) => {
                                 <button
                                     type='submit'
                                     className='inline-flex justify-center rounded-md border border-transparent bg-cyan-100 px-4 py-2 text-sm font-medium text-cyan-900 hover:bg-cyan-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 focus-visible:ring-offset-2'
-                                    onClick={() => setIsOpenFeedback(false)}
                                 >
                                     Send Feedback
                                 </button>

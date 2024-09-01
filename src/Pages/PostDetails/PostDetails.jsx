@@ -68,6 +68,8 @@ const PostDetails = () => {
         }
         try{
             await mutateAsync(commentDetails);
+            refetch()
+            reset();
         } catch(error) {
             console.log(error);
             toast.error('Your comment nor found');

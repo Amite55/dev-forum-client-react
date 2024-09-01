@@ -2,32 +2,12 @@ import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import useAxiosSecure from '../../../../customsHooks/useAxiosSecure';
-import useAuth from '../../../../customsHooks/useAuth';
 import PostCommentTableRow from './PostCommentTableRow';
 import { useParams } from 'react-router-dom';
 
 const MyPostComment = () => {
   const { id } = useParams();
-  const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
-
-
-  // my posted data fetch the postedCollection bd===========
-  const { data: myPost = [], isLoading, refetch } = useQuery({
-    queryKey: ['my-post', user?.email],
-    queryFn: async () => {
-      const { data } = await axiosSecure.get(`/my-post/${user?.email}`);
-      return data;
-    }
-  })
-  // const { data: postedData = {} } = useQuery({
-  //     queryKey: ['post', id],
-  //     queryFn: async () => {
-  //         const { data } = await axiosSecure.get(`/post/${id}`);
-  //         return data;
-  //     }
-  // })
-  // console.log(postedData, 'spefic');
 
   // comment get ==========
   const { data: comment = [] } = useQuery({
@@ -37,7 +17,6 @@ const MyPostComment = () => {
       return postComment
     }
   })
-  console.log(comment);
 
   return (
     <>

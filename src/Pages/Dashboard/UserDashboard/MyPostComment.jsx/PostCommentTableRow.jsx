@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 import UpdateCommentFeedback from './UpdateCommentFeedback';
 import UpdateCommentReport from './UpdateCommentReport';
 
@@ -26,7 +25,6 @@ const PostCommentTableRow = ({cmt}) => {
             <UpdateCommentFeedback 
              setIsOpenFeedback={setIsOpenFeedback}
              isOpenFeedback={isOpenFeedback}
-             cmt={cmt}
             />
         </td>
         <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
@@ -41,7 +39,6 @@ const PostCommentTableRow = ({cmt}) => {
               setIsOpenReport={setIsOpenReport}
               cmt={cmt}
             />
-
         </td>
       </tr>
     );

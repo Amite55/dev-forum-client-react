@@ -17,7 +17,7 @@ const AllPostedData = ({ allPost }) => {
             return postComment
         }
     })
-    console.log(comment);
+    
 
     return (
         <div className="max-w-2xl mx-auto my-10 px-8 py-4 rounded-lg shadow-md dark:bg-white">
