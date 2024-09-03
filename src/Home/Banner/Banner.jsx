@@ -1,21 +1,28 @@
-import React, { useState } from 'react';
-import queryString from 'query-string';
-import { useNavigate } from 'react-router-dom';
+import { useContext, useState } from "react";
+import { SearchContext } from "../../SearchProvider/SearchProvider";
+import { useQuery } from "@tanstack/react-query";
+import useAxiosCommon from "../../customsHooks/useAxiosCommon";
 
 
 const Banner = () => {
-  const navigate = useNavigate();
+  // const axiosCommon = useAxiosCommon();
+  const {search, setSearch} = useContext(SearchContext);
+  // const [searchText, setSearchText] = useState('');
 
+     // fetch postedData all Data ============
+  //    const { data: searchData = [], isLoading } = useQuery({
+  //     queryKey: ['postedData', searchText],
+  //     queryFn: async () => {
+  //         const { data } = await axiosCommon.get(`/search/postedDta?search=${searchText}`);
+  //         return data;
+  //     },
+  // });
   // input form value handle ============
   const handleSubmit = (e) => {
     e.preventDefault()
-    const search = e.target.search.value;
-    const currentQuery = {search: search}
-    const url = queryString.stringifyUrl({
-      url: '/',
-      query: currentQuery
-    })
-    navigate(url)
+    const searchValue = e.target.search.value;
+    // setSearchText(searchValue)
+    setSearch(searchValue)
   }
   
 
@@ -34,11 +41,12 @@ const Banner = () => {
                 className='px-6 py-2 text-gray-700 placeholder-gray-500 bg-white outline-none focus:placeholder-transparent'
                 type='text'
                 name='search'
-                placeholder='Search Post Title'
+                placeholder='Search Tag Name'
                 aria-label='Enter post tag'
               />
 
-              <button type='submit' className='px-1 md:px-4 py-3 text-sm font-medium tracking-wider text-gray-100 uppercase transition-colors duration-300 transform bg-gray-700 rounded-md hover:bg-gray-600 focus:bg-gray-600 focus:outline-none'>
+              <button 
+              type='submit' className='px-1 md:px-4 py-3 text-sm font-medium tracking-wider text-gray-100 uppercase transition-colors duration-300 transform bg-gray-700 rounded-md hover:bg-gray-600 focus:bg-gray-600 focus:outline-none'>
                 Search
               </button>
             </div>

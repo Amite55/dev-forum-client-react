@@ -12,6 +12,7 @@ import {
   QueryClient,
   QueryClientProvider,
 } from '@tanstack/react-query'
+import SearchProvider from './SearchProvider/SearchProvider';
 const queryClient = new QueryClient()
 
 
@@ -19,12 +20,14 @@ createRoot(document.getElementById('root')).render(
   <StrictMode>
     <HelmetProvider>
       <QueryClientProvider client={queryClient}>
-      <Authprovider>
-        <div className='max-w-screen-xl mx-auto'>
-          <RouterProvider router={router} />
-        </div>
-        <Toaster />
-      </Authprovider>
+        <Authprovider>
+          <SearchProvider>
+            <div className='max-w-screen-xl mx-auto'>
+              <RouterProvider router={router} />
+            </div>
+          </SearchProvider>
+          <Toaster />
+        </Authprovider>
       </QueryClientProvider>
     </HelmetProvider>
   </StrictMode>,

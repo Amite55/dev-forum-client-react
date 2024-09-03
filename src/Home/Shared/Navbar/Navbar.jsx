@@ -11,7 +11,6 @@ const Navbar = () => {
     const { user, logOut } = useAuth()
     const axiosCommon = useAxiosCommon();
     const [badge] = useBadge();
-    console.log(badge);
 
     const handleLogOut = () => {
         logOut()
@@ -28,7 +27,6 @@ const Navbar = () => {
         queryKey: ['announcementData'],
         queryFn: async () => {
             const { data } = await axiosCommon.get('/announcementData');
-            console.log(data);
             return data;
         }
     })

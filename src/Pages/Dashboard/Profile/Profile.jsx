@@ -4,6 +4,8 @@ import useAuth from '../../../customsHooks/useAuth'
 import useRole from '../../../customsHooks/useRole'
 import useBadge from '../../../customsHooks/useBadge';
 import LoadingSpinner from '../../../component/LoadnigSpiner';
+import { SlBadge } from "react-icons/sl";
+import { MdBadge } from "react-icons/md";
 
 const Profile = () => {
   const { user, loading } = useAuth() || {};
@@ -56,7 +58,7 @@ const Profile = () => {
               <p className='flex flex-col'>
                 Badge
                 <span className=' uppercase font-bold text-black '>
-                    {badge}
+                    {badge === 'Bronze' ? <MdBadge className='text-cyan-500' size={27} /> : <SlBadge className='text-orange-500' size={27} />}
                 </span>
               </p>
 

@@ -20,7 +20,7 @@ const AllPostedData = ({ allPost }) => {
     
 
     return (
-        <div className="max-w-2xl mx-auto my-10 px-8 py-4 rounded-lg shadow-md dark:bg-white">
+        <div className="max-w-2xl mx-auto my-8 px-8 py-4 rounded-lg shadow-md dark:bg-white">
             <Link to={`/post/${allPost?._id}`}>
                 <div className="flex items-center justify-between">
                     <span className="text-sm font-light text-gray-900 ">{date}</span>
