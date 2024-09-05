@@ -9,7 +9,11 @@
 ### Client Side Github Repository Link:- https://github.com/programming-hero-web-course1/b9a12-client-side-Amite55
 ### Server Side Github Repository Link:- https://github.com/programming-hero-web-course1/b9a12-server-side-Amite55
 
-### Live Link:
+### Live Link:  https://dev-forum-1d988.web.app
+
+-Client Side Github Repository Link: https://github.com/programming-hero-web-course1/b9a12-client-side-Amite55
+
+-Server Side Github Repository Link:https://github.com/programming-hero-web-course1/b9a12-server-side-Amite55
 
 # Admin ----
 email:- madhab15820@gmail.com

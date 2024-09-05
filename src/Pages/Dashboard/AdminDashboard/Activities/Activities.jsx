@@ -14,11 +14,12 @@ const Activities = () => {
             return data;
         }
     })
+    console.log(reports);
     
 
     return (
         <>
-        <div className='container mx-auto px-4 sm:px-8'>
+        <div className='container mx-auto px-2 sm:px-1'>
             <Helmet>
                 <title>Activity</title>
             </Helmet>
@@ -39,6 +40,12 @@ const Activities = () => {
                                         className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
                                     >
                                         Comment
+                                    </th>
+                                    <th
+                                        scope='col'
+                                        className='px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal'
+                                    >
+                                        Reports
                                     </th>
                                     <th
                                         scope='col'
