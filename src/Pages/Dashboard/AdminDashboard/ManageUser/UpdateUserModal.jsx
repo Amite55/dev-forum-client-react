@@ -55,7 +55,7 @@ const UpdateUserModal = ({ setIsOpen, isOpen, modalHandler, user }) => {
                                     {/* =========== role set select ========== */}
                                     <select defaultValue={selected} onChange={(e) => setSelected(e.target.value)} className='w-full border rounded-lg '>
                                         {
-                                            roles.map(role => <option>{role}</option>)
+                                            roles.map(role => <option key={role}>{role}</option>)
                                         }
                                     </select>
                                 </div>

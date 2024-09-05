@@ -151,23 +151,7 @@ const SignUp = () => {
                 {
                   errors.name && <span className="text-red-500">This field is required</span>
                 }
-              </div>
-              {/* <div className='mt-4'>
-                <label
-                  className='block mb-2 text-sm font-medium text-gray-600 '
-                  htmlFor='photo'
-                >
-                  Photo URL
-                </label>
-                <input
-                  id='photo'
-                  autoComplete='photo'
-                  name='photo'
-                  {...register("image")}
-                  className='block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg    focus:border-blue-400 focus:ring-opacity-40  focus:outline-none focus:ring focus:ring-blue-300'
-                // type='url'
-                />
-              </div> */}
+              </div> 
               <div className='mt-4'>
                 <label
                   className='block mb-2 text-sm font-medium text-gray-600 '

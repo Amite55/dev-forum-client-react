@@ -1,17 +1,17 @@
 ## Hey Developer! This My project DevForum Platform ltd.
 
-# DevForum: A MERN Stack Forum Application
+## DevForum: A MERN Stack Forum Application
 
 - DevForum is an online platform where users can create, view, and participate in discussions. It features user authentication, post sorting, voting, search functionality, and admin controls.
 
 
-# assignment12_category_0002
-# Client Link:- https://github.com/programming-hero-web-course1/b9a12-client-side-Amite55
-# Server side Link:- https://github.com/programming-hero-web-course1/b9a12-server-side-Amite55
+## assignment12_category_0002
+### Client Side Github Repository Link:- https://github.com/programming-hero-web-course1/b9a12-client-side-Amite55
+### Server Side Github Repository Link:- https://github.com/programming-hero-web-course1/b9a12-server-side-Amite55
 
-# Live Link:
+### Live Link:
 
-#Admin 
+# Admin ----
 email:- madhab15820@gmail.com
 password:- Amite55##
 
@@ -34,7 +34,6 @@ password:- Amite55##
 - axios
 - firebase
 - localforage
-- match-sorter
 - prop-types
 - query-string
 - react

@@ -9,7 +9,6 @@ const MyPostedTableRow = ({ post,  handleDelete }) => {
     const closeModal = () => {
       setIsOpen(false)
     }
-    console.log(post);
 
      const totalVote = post?.upVote + post?.downVote;
      const date =new Date(post?.postTime).toDateString();

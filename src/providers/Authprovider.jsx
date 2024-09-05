@@ -23,9 +23,7 @@ const Authprovider = ({ children }) => {
     }
     const logOut = async () => {
         setLoading(true)
-        await axios.get(`${import.meta.env.VITE_API_URL}/logout`, {
-            withCredentials: true,
-        })
+        await axios.get(`${import.meta.env.VITE_API_URL}/logout`)
         return signOut(auth)
     }
     const signInWithGoogle = () => {
@@ -62,23 +60,49 @@ const Authprovider = ({ children }) => {
             { email },
             { withCredentials: true }
         )
+        const token = response.data.token; // Extract token from response
+        console.log('Token received from server:', token);
         return data
     }
-
     // observer ==========
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, currentUser => {
             setUser(currentUser);
             if (currentUser) {
-                getToken(currentUser.email);
-                saveUser(currentUser)
+                    // == get token store client
+                    const userInfo = {email: currentUser.email};
+                    axios.post(`${import.meta.env.VITE_API_URL}/jwt`, userInfo)
+                    .then(res => {
+                        if(res.data.token){
+                            localStorage.setItem('access-token', res.data.token);
+                            setLoading(false);
+                        }
+                    })
+                     saveUser(currentUser)
             }
-            setLoading(false);
+            else{
+                // somethings
+                localStorage.removeItem('access-token');
+                setLoading(false);
+            }
         });
         return () => {
             return unsubscribe();
         }
-    }, [])
+    }, [axios])
+    // useEffect(() => {
+    //     const unsubscribe = onAuthStateChanged(auth, currentUser => {
+    //         setUser(currentUser);
+    //         if (currentUser) {
+    //             getToken(currentUser?.email);
+    //             saveUser(currentUser)
+    //         }
+    //         setLoading(false);
+    //     });
+    //     return () => {
+    //         return unsubscribe();
+    //     }
+    // }, [])
 
     const authInfo = {
         user,

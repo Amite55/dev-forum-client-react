@@ -28,7 +28,7 @@ const PostDetails = () => {
         }
     })
 
-    const { author, authorImage, title, description, tags, upVote, downVote, sharePost, _id } = postedData ;
+    const { author, authorImage, title, description, tags, upVote, downVote, _id } = postedData ;
     const date = new Date(postedData?.postTime).toLocaleString();
 
     // comment get ==========
@@ -49,6 +49,7 @@ const PostDetails = () => {
         onSuccess: () => {
             toast.success('Send Your Comment!')
             reset();
+            refetch()
         }
     })
 
@@ -135,17 +136,17 @@ const PostDetails = () => {
 
                     <div className="flex items-center">
                         <img className="hidden object-cover w-10 h-10 mx-4 rounded-full sm:block" src={authorImage} alt="avatar" />
-                        <a className="font-bold text-gray-800 cursor-pointer dark:text-black" tabindex="0" role="link">{author}</a>
+                        <a className="font-bold text-gray-800 cursor-pointer dark:text-black"  role="link">{author}</a>
                     </div>
                 </div>
 
                 <div className="mt-2">
-                    <a href="" className="text-xl font-bold text-gray-700 dark:text-black" tabindex="0" role="link" >{title}</a>
+                    <a href="" className="text-xl font-bold text-gray-700 dark:text-black"  role="link" >{title}</a>
                     <p className="mt-2 text-gray-800 dark:text-gray-900">{description}</p>
                 </div>
 
                 <div className='mt-4 flex justify-end mr-5 mb-2'>
-                    <p className='text-white'>Tags: <span className='text-cyan-300 bg-cyan-500 px-2 w-auto rounded-md'>{tags}</span></p>
+                    <p className='text-white'>Tags: <span className='text-cyan-400 bg-cyan-100 px-2 w-auto rounded-md'>{tags}</span></p>
                 </div>
                 <hr className='mt-1 px-7' />
                 <div className="flex items-center justify-between mt-1">

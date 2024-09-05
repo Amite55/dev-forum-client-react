@@ -128,6 +128,7 @@ const Login = () => {
                                     Email Address
                                 </label>
                                 <input
+                                required
                                     id='LoggingEmailAddress'
                                     autoComplete='email'
                                     name='email'
@@ -147,6 +148,7 @@ const Login = () => {
                                 </div>
 
                                 <input
+                                required
                                     id='loggingPassword'
                                     autoComplete='current-password'
                                     name='password'

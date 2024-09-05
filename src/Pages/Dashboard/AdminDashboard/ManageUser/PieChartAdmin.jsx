@@ -1,29 +1,49 @@
 
-import { PieChart, Pie} from 'recharts';
+import { PieChart, Pie, Cell, Legend} from 'recharts';
+const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
 
 
-const PieChartAdmin = ({users, posts}) => {
+const RADIAN = Math.PI / 180;
+const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
+  const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+  const x = cx + radius * Math.cos(-midAngle * RADIAN);
+  const y = cy + radius * Math.sin(-midAngle * RADIAN);
 
+  return (
+    <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
+      {`${(percent * 100).toFixed(0)}%`}
+    </text>
+  );
+};
 
-    const data01 = [
-        { name: 'Group A', value: posts?.length },
-        { name: 'Group A', value: users.length },
-       ,
-    ];
-    const data02 = [
-        { name: posts?.title, value: posts?.length },
-        { name: users?.name, value: users.length },
-      
+const PieChartAdmin = ({users, posts, comments}) => {
+    const data = [
+        { name: "All Posts", value: posts?.length },
+        { name: "Users", value: users.length },
+        { name: "Comments", value: comments.length },
     ];
 
     return (
-        <div className='flex justify-center'>
+        <div className='flex justify-center '>
            
-                <PieChart width={500} height={500}>
-                    <Pie data={data01} dataKey="value" cx="50%" cy="50%" outerRadius={60} fill="#8884d8" />
-                    <Pie data={data02} dataKey="value" cx="50%" cy="50%" innerRadius={70} outerRadius={90} fill="#82ca9d" label />
-                </PieChart>
+           <PieChart width={300} height={300}>
+          <Pie
+            data={data}
+            cx="50%"
+            cy="50%"
+            labelLine={false}
+            label={renderCustomizedLabel}
+            outerRadius={80}
+            fill="#8884d8"
+            dataKey="value"
+          >
+            {data.map((entry, index) => (
+              <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+            ))}
+          </Pie>
+          <Legend/>
+        </PieChart>
        
         </div>
     );

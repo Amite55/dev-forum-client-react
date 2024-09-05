@@ -50,12 +50,9 @@ const MyProfile = () => {
 
     return (
         <div>
-            <Profile />
-
-            
-
-            {/* <AllPostedData/> */}
-
+            {/* profile section user and admin dynamical */}
+              <Profile />
+                {/* only admin - users info */}
             {
                 role === 'admin' && <>
 
@@ -106,15 +103,19 @@ const MyProfile = () => {
                         </div>
                     </div>
 
-
-                    <PieChartAdmin users={users} posts={posts} />
+                    {/* --------------- admin pie chart --------------------- */}
+                    <PieChartAdmin 
+                    users={users} 
+                    posts={posts} 
+                    comments={comments}
+                    />
 
 
                 </>
             }
 
 
-
+            {/* users posts */}
             {
                 PostedData && PostedData.length > 0
                     ?
@@ -125,7 +126,7 @@ const MyProfile = () => {
                     </div>
                     :
 
-                    <div className='text-center my-10' >
+                    <div className='text-center my-8' >
                         <div className='text-2xl font-bold'>
                             No Posted Data Available In This Tags Category!
                         </div>
